@@ -14,6 +14,31 @@ Vagrant.configure("2") do |config|
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "bento/ubuntu-16.04"
 
+  config.vm.define "slave1" do |slave1|
+    slave1.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+    end
+    slave1.vm.network "private_network", ip: "192.168.33.20"
+    slave1.vm.provision "shell", inline: "echo Hello Slave1"
+  end
+
+  config.vm.define "slave2" do |slave2|
+    slave2.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+    end
+    slave2.vm.network "private_network", ip: "192.168.33.30"
+    slave2.vm.provision "shell", inline: "echo Hello Slave2"
+  end
+
+  config.vm.define "master" do |master|
+    master.vm.provider "virtualbox" do |vb|
+      vb.memory = "512"
+    end
+    master.vm.network "private_network", ip: "192.168.33.10"
+    master.vm.provision "shell", inline: "echo Hello Master"
+  end
+
+
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
