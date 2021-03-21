@@ -12,31 +12,52 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
+  boxes = [
+    {
+        :name => "master",
+        :eth1 => "192.168.205.10",
+        :mem => "512",
+        :cpu => "1"
+    },
+    {
+        :name => "slave1",
+        :eth1 => "192.168.205.11",
+        :mem => "512",
+        :cpu => "1"
+    },
+    {
+        :name => "slave2",
+        :eth1 => "192.168.205.12",
+        :mem => "512",
+        :cpu => "1"
+    }
+]
+
   config.vm.box = "ubuntu/xenial64"
 
-  config.vm.define "slave1" do |slave1|
-    slave1.vm.provider "virtualbox" do |vb|
-      vb.memory = "512"
-    end
-    slave1.vm.network "private_network", ip: "192.168.33.20"
-    slave1.vm.provision "shell", inline: "echo Hello Slave1"
+  config.vm.provider "virtualbox" do |v, override|
+    override.vm.box = "base"
   end
 
-  config.vm.define "slave2" do |slave2|
-    slave2.vm.provider "virtualbox" do |vb|
-      vb.memory = "512"
+  boxes.each do |opts|
+    config.vm.define opts[:name] do |config|
+      config.vm.hostname = opts[:name]
+
+      config.vm.provider "virtualbox" do |v|
+        v.vmx["memsize"] = opts[:mem]
+        v.vmx["numvcpus"] = opts[:cpu]
+      end
+
+      config.vm.provider "virtualbox" do |v|
+        v.customize ["modifyvm", :id, "--name", opts[:name]]
+        v.customize ["modifyvm", :id, "--memory", opts[:mem]]
+        v.customize ["modifyvm", :id, "--cpus", opts[:cpu]]
+      end
+
+      config.vm.network :private_network, ip: opts[:eth1]
     end
-    slave2.vm.network "private_network", ip: "192.168.33.30"
-    slave2.vm.provision "shell", inline: "echo Hello Slave2"
   end
 
-  config.vm.define "master" do |master|
-    master.vm.provider "virtualbox" do |vb|
-      vb.memory = "512"
-    end
-    master.vm.network "private_network", ip: "192.168.33.10"
-    master.vm.provision "shell", path: "shell-provisioners/install-ansible.sh"
-  end
 
 
   # Disable automatic box update checking. If you disable this, then
