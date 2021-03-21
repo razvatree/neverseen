@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "bento/ubuntu-16.04"
+  config.vm.box = "ubuntu/xenial64"
 
   config.vm.define "slave1" do |slave1|
     slave1.vm.provider "virtualbox" do |vb|
@@ -35,7 +35,7 @@ Vagrant.configure("2") do |config|
       vb.memory = "512"
     end
     master.vm.network "private_network", ip: "192.168.33.10"
-    master.vm.provision "shell", inline: "echo Hello Master"
+    master.vm.provision "shell", path: "shell-provisioners/install-ansible.sh"
   end
 
 
