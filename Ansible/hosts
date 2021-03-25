@@ -1,2 +1,2 @@
-[master]
-192.168.205.10
+[all]
+localhost ansible_connection=local
