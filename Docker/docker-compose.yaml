@@ -8,8 +8,8 @@ services:
     ports:
       - "9090:9090"
     command: --config.file=/vagrant/prometheus/prometheus.yml
-    # volumes: 
-    #   - /vagrant/prometheus:/etc/prometheus
+    volumes: 
+      - /vagrant/prometheus:/vagrant/prometheus
   
   grafana:
     image: grafana/grafana:latest

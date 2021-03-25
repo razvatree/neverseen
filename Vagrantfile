@@ -7,8 +7,8 @@ Vagrant.configure("2") do |config|
       :eth1 => "192.168.205.10",
       :mem => "512",
       :cpu => "1"
-  }
- ]
+    }
+]
 
   slaves = [
     {
@@ -44,11 +44,12 @@ slaves.each do |opts|
       ansible.playbook = "Ansible/install_node_exporter.yaml"
       ansible.inventory_path = "Ansible/hosts"
       ansible.limit = 'all'
+	end
   end
 end
 
 # Run and provision the Master VM
-  master.each do |opts|
+master.each do |opts|
     config.vm.define opts[:name] do |config|
       config.vm.hostname = opts[:name]
       config.vm.synced_folder "./", "/vagrant", 
@@ -73,5 +74,4 @@ end
       # docker run --rm -it -d --name prometheus -p 9090:9090 -v /opt/docker/prometheus:/etc/prometheus prom/prometheus --config.file=/etc/prometheus/prometheus.yml
     end
   end
-end
 end
