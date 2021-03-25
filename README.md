@@ -2,15 +2,15 @@
 Demonstration purposes repo
 
 Prerequisites: 
-  -Vagrant installed on host machine
+`Vagrant` installed on host machine
   
 How to run:
-  -Check out the repository
-  -Run "vagrant up" inside the root directory of your local repository
+1. Check out the repository
+2. Run `vagrant up` inside the root directory of your local repository
   
-This will call Vagrant to spawn up 3 VMs, labeled "master", "slave1", "slave2".
-Ansible will be installed on each machine via shell provisioning
-Node_exporter service will be installed via Ansible.
-Docker will be installed on the "master" VM
-Docker-compsose will be called to spawn the Grafana and Prometheus services on the master
-  
+Execution flow:
+1. `Vagrant` spawns 3 VMs `master`, `slave1`, `slave2`
+2. `Ansible` is installed via `shell provisioning`
+3. `Ansible` installs `node_exporter` service on all machines
+4. `Docker` is installed on master
+5. `docker-compose` brings up `Grafana` and `Prometheus` containers
